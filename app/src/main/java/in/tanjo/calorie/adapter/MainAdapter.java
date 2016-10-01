@@ -1,7 +1,6 @@
 package in.tanjo.calorie.adapter;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -36,8 +35,7 @@ public class MainAdapter extends AbsAdapter<Campaign, MainViewHolder> implements
     @Override
     public void setItems(@NonNull List<Campaign> items) {
         List<Campaign> filteredCampaigns = new ArrayList<>();
-        Observable.from(items)
-                .filter(new MainItemFilter())
+        Observable.from(items).filter(new MainItemFilter())
                 .forEach(new MainItemAction(filteredCampaigns), new ThrowableAction());
         super.setItems(filteredCampaigns);
     }
