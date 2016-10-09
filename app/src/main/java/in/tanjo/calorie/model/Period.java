@@ -8,9 +8,11 @@ import java.util.Date;
 
 public class Period extends AbsGsonModel {
 
+    @Nullable
     @SerializedName("start")
     Date start;
 
+    @Nullable
     @SerializedName("end")
     Date end;
 
@@ -19,7 +21,7 @@ public class Period extends AbsGsonModel {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(@Nullable Date start) {
         this.start = start;
     }
 
@@ -28,7 +30,7 @@ public class Period extends AbsGsonModel {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(@Nullable Date end) {
         this.end = end;
     }
 }

@@ -1,4 +1,14 @@
 <resources>
-    <string name="app_name">Calorie</string>
+    <string name="app_name">AAC</string>
     <string name="calorie">Calorie</string>
+    <string name="purchase_history">購入履歴</string>
+    <string name="campaign">キャンペーン</string>
+    <string name="setting">設定</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_blank_title">作成中</string>
+    <string name="fragment_campaign_title">キャンペーン</string>
+    <string name="fragment_purchase_create_title">作成（購入履歴）</string>
+    <string name="fragment_purchase_title">購入履歴</string>
 </resources>

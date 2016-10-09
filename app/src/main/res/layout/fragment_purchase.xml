@@ -1,0 +1,58 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment_purchase_coordinatorlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context="in.tanjo.calorie.fragment.PurchaseFragment"
+        >
+
+    <android.support.design.widget.AppBarLayout
+            android:id="@+id/fragment_purchase_appbarlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            >
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/fragment_purchase_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/fragment_purchase_swiperefreshlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_purchase_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fragment_purchase_floatingactionbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:src="@drawable/ic_add"
+            app:fabSize="normal"
+            app:layout_anchor="@id/fragment_purchase_recyclerview"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_behavior="in.tanjo.calorie.behavior.ScrollAwareFABBehavior"
+            />
+
+</android.support.design.widget.CoordinatorLayout>

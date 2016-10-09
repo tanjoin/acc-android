@@ -8,11 +8,14 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
+import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
+
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -28,7 +31,6 @@ public class AbsGsonModel {
             @Override
             public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
                     throws JsonParseException {
-
                 for (String format : Arrays.asList("yyyy/MM/dd HH:mm", "yyyy/MM/dd")) {
                     try {
                         return new SimpleDateFormat(format, Locale.JAPAN).parse(json.getAsString());
@@ -46,7 +48,7 @@ public class AbsGsonModel {
 
     protected <T> List<T> wrapList(List<T> list) {
         if (list == null) {
-            return Collections.emptyList();
+            list = new ArrayList<>();
         }
         return list;
     }

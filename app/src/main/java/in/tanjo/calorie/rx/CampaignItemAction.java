@@ -9,11 +9,11 @@ import in.tanjo.calorie.model.Campaign;
 import rx.functions.Action1;
 
 
-public class MainItemAction implements Action1<Campaign> {
+public class CampaignItemAction implements Action1<Campaign> {
 
     private List<Campaign> filteredCampaigns;
 
-    public MainItemAction(@NonNull List<Campaign> filteredCampaigns) {
+    public CampaignItemAction(@NonNull List<Campaign> filteredCampaigns) {
         this.filteredCampaigns = filteredCampaigns;
     }
 

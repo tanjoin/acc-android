@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/menu_activity_main_group">
+
+        <item
+                android:id="@+id/menu_activity_main_calorie"
+                android:title="@string/calorie"
+                />
+
+        <item
+                android:id="@+id/menu_activity_main_purchase"
+                android:title="@string/purchase_history"
+                />
+
+        <item
+                android:id="@+id/menu_activity_main_campaign"
+                android:title="@string/campaign"
+                />
+
+    </group>
+
+    <group>
+
+        <item
+                android:id="@+id/menu_activity_main_setting"
+                android:title="@string/setting"
+                />
+
+    </group>
+
+</menu>

@@ -1,7 +1,7 @@
 package in.tanjo.calorie.viewholder;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,7 +10,7 @@ import butterknife.OnClick;
 import in.tanjo.calorie.R;
 import in.tanjo.calorie.model.Campaign;
 
-public class MainViewHolder extends AbsViewHolder<Campaign> {
+public class CampaignViewHolder extends AbsViewHolder<Campaign> {
 
     @BindView(R.id.viewholder_main_title)
     TextView titleView;
@@ -25,17 +25,27 @@ public class MainViewHolder extends AbsViewHolder<Campaign> {
 
     private int position;
 
-    public MainViewHolder(View itemView, Listener listener) {
+    public CampaignViewHolder(@NonNull View itemView, @NonNull Listener listener) {
         super(itemView);
         this.listener = listener;
     }
 
     @Override
-    public void bind(@NonNull Campaign item, int position) {
+    public void bind(@Nullable Campaign item, int position) {
         this.position = position;
-        titleView.setText(item.getTitle());
-        descriptionView.setText(item.getDescription());
-        labelView.setText(item.getServiceTitle());
+        if (item != null) {
+            titleView.setText(item.getTitle());
+            descriptionView.setText(item.getDescription());
+            descriptionView.setVisibility(View.VISIBLE);
+            labelView.setText(item.getServiceTitle());
+            labelView.setVisibility(View.VISIBLE);
+        } else {
+            titleView.setText("");
+            descriptionView.setText("");
+            descriptionView.setVisibility(View.GONE);
+            labelView.setText("");
+            labelView.setVisibility(View.GONE);
+        }
     }
 
     @OnClick(R.id.viewholder_main_cardview)
@@ -46,6 +56,7 @@ public class MainViewHolder extends AbsViewHolder<Campaign> {
     }
 
     public interface Listener {
+
         void onCardViewClick(int position);
     }
 }

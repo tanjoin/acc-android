@@ -8,17 +8,17 @@ import java.util.List;
 
 import in.tanjo.calorie.R;
 import in.tanjo.calorie.model.Campaign;
-import in.tanjo.calorie.rx.MainItemAction;
-import in.tanjo.calorie.rx.MainItemFilter;
+import in.tanjo.calorie.rx.CampaignItemAction;
+import in.tanjo.calorie.rx.CampaignItemFilter;
 import in.tanjo.calorie.rx.ThrowableAction;
-import in.tanjo.calorie.viewholder.MainViewHolder;
+import in.tanjo.calorie.viewholder.CampaignViewHolder;
 import rx.Observable;
 
-public class MainAdapter extends AbsAdapter<Campaign, MainViewHolder> implements MainViewHolder.Listener {
+public class CampaignAdapter extends AbsAdapter<Campaign, CampaignViewHolder> implements CampaignViewHolder.Listener {
 
     private Listener listener;
 
-    public MainAdapter(Listener listener) {
+    public CampaignAdapter(Listener listener) {
         this.listener = listener;
     }
 
@@ -35,20 +35,20 @@ public class MainAdapter extends AbsAdapter<Campaign, MainViewHolder> implements
     @Override
     public void setItems(@NonNull List<Campaign> items) {
         List<Campaign> filteredCampaigns = new ArrayList<>();
-        Observable.from(items).filter(new MainItemFilter())
-                .forEach(new MainItemAction(filteredCampaigns), new ThrowableAction());
+        Observable.from(items).filter(new CampaignItemFilter())
+                .forEach(new CampaignItemAction(filteredCampaigns), new ThrowableAction());
         super.setItems(filteredCampaigns);
     }
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.viewholder_main;
+        return R.layout.viewholder_campaign;
     }
 
     @NonNull
     @Override
-    protected MainViewHolder createViewHolder(View view) {
-        return new MainViewHolder(view, this);
+    protected CampaignViewHolder createViewHolder(View view) {
+        return new CampaignViewHolder(view, this);
     }
 
     public interface Listener {

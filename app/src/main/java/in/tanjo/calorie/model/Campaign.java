@@ -9,21 +9,27 @@ import java.util.List;
 
 public class Campaign extends AbsGsonModel {
 
+    @Nullable
     @SerializedName("title")
     String title;
 
+    @Nullable
     @SerializedName("description")
     String description;
 
+    @Nullable
     @SerializedName("urls")
     List<String> urls;
 
+    @Nullable
     @SerializedName("service_title")
     String serviceTitle;
 
+    @Nullable
     @SerializedName(value = "date", alternate = {"period", "during", "term"})
     Period period;
 
+    @Nullable
     @SerializedName("on")
     List<Weekday> on;
 

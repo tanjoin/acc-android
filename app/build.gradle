@@ -58,8 +58,12 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-core:5.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
 
-    // RxJava
+    // RxJava (https://github.com/ReactiveX/RxJava)
     compile 'io.reactivex:rxjava:1.2.0'
+
+    // RxAndroid (https://github.com/ReactiveX/RxAndroid)
     compile 'io.reactivex:rxandroid:1.2.1'
 
+    // ThreeTenABP (https://github.com/JakeWharton/ThreeTenABP)
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.4'
 }

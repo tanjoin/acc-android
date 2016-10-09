@@ -1,6 +1,7 @@
 package in.tanjo.calorie.viewholder;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -14,5 +15,5 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    abstract public void bind(@NonNull T item, int position);
+    abstract public void bind(@Nullable T item, int position);
 }
