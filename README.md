@@ -11,6 +11,7 @@
 - OkHttp
 - ButterKnife
 - Guava
-- Lombok
 - OrmLite
-
+- RxJava
+- RxAndroid
+- ThreeTenABP
