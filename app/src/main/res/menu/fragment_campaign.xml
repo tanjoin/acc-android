@@ -5,7 +5,7 @@
 
     <item
             android:id="@+id/menu_fragment_campaign_filter"
-            android:icon="@drawable/ic_done"
+            android:icon="@drawable/ic_filter_list"
             android:title="@string/filter"
             app:showAsAction="always"
             />

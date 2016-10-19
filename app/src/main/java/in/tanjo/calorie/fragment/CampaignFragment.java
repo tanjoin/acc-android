@@ -3,6 +3,7 @@ package in.tanjo.calorie.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MenuItem;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import in.tanjo.calorie.MainActivity;
@@ -38,7 +42,9 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
 
     private CampaignAdapter campaignAdapter;
 
-    private boolean isFilter = true;
+    private List<String> serviceTitles = new ArrayList<>();
+
+    private int filterIndex = -1;
 
     @NonNull
     public static CampaignFragment newInstance() {
@@ -69,7 +75,6 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.menu_fragment_campaign_filter) {
-                    isFilter = !isFilter;
                     filter();
                     return true;
                 }
@@ -97,6 +102,22 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
         onRefresh();
     }
 
+    public void filter() {
+        filterIndex += 1;
+        if (serviceTitles.size() > filterIndex) {
+            if (getView() != null) {
+                Snackbar.make(getView(), serviceTitles.get(filterIndex), Snackbar.LENGTH_SHORT).show();
+            }
+            campaignAdapter.filter(serviceTitles.get(filterIndex));
+        } else {
+            filterIndex = -1;
+            if (getView() != null) {
+                Snackbar.make(getView(), "全部", Snackbar.LENGTH_SHORT).show();
+            }
+            campaignAdapter.filter(null);
+        }
+    }
+
     @Override
     public void onRefresh() {
         new CampaignApi().getCampaigns()
@@ -104,7 +125,7 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
                 .doOnSubscribe(new SwipeRefreshLayoutRefreshingAction0(swipeRefreshLayout, true))
                 .doOnError(new SwipeRefreshLayoutRefreshingAction1<Throwable>(swipeRefreshLayout))
                 .doOnCompleted(new SwipeRefreshLayoutRefreshingAction0(swipeRefreshLayout, false))
-                .subscribe(getRxManager().composite(new CampaignsResponseSubscriber(campaignAdapter)));
+                .subscribe(getRxManager().composite(new CampaignsResponseSubscriber(campaignAdapter, serviceTitles)));
     }
 
     @Override
@@ -112,9 +133,5 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
         if (campaign.getUrls().size() > 0) {
             HtmlUtils.openUrl(getContext(), campaign.getUrls().get(0));
         }
-    }
-
-    public void filter() {
-        // TODO: フィルター
     }
 }
