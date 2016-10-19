@@ -15,7 +15,7 @@
             >
 
         <android.support.v7.widget.Toolbar
-                android:id="@+id/fragment_main_toolbar"
+                android:id="@+id/fragment_campaign_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -27,12 +27,12 @@
     <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/fragment_main_swiperefreshlayout"
+            android:id="@+id/fragment_campaign_swiperefreshlayout"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >
 
         <android.support.v7.widget.RecyclerView
-                android:id="@+id/fragment_main_recyclerview"
+                android:id="@+id/fragment_campaign_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />

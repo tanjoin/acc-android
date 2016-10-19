@@ -1,7 +1,5 @@
 package in.tanjo.calorie.fragment;
 
-import com.google.common.reflect.TypeToken;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,9 +8,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MenuItem;
 import android.view.View;
-
-import java.util.List;
 
 import butterknife.BindView;
 import in.tanjo.calorie.MainActivity;
@@ -23,23 +21,24 @@ import in.tanjo.calorie.model.Campaign;
 import in.tanjo.calorie.subscriber.CampaignsResponseSubscriber;
 import in.tanjo.calorie.subscriber.action.SwipeRefreshLayoutRefreshingAction0;
 import in.tanjo.calorie.subscriber.action.SwipeRefreshLayoutRefreshingAction1;
-import in.tanjo.calorie.util.GsonUtils;
 import in.tanjo.calorie.util.HtmlUtils;
 import rx.android.schedulers.AndroidSchedulers;
 
 
 public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.OnRefreshListener, CampaignAdapter.Listener {
 
-    @BindView(R.id.fragment_main_recyclerview)
+    @BindView(R.id.fragment_campaign_recyclerview)
     RecyclerView recyclerView;
 
-    @BindView(R.id.fragment_main_swiperefreshlayout)
+    @BindView(R.id.fragment_campaign_swiperefreshlayout)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    @BindView(R.id.fragment_main_toolbar)
+    @BindView(R.id.fragment_campaign_toolbar)
     Toolbar toolbar;
 
     private CampaignAdapter campaignAdapter;
+
+    private boolean isFilter = true;
 
     @NonNull
     public static CampaignFragment newInstance() {
@@ -65,20 +64,37 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
                 }
             }
         });
+        toolbar.inflateMenu(R.menu.fragment_campaign);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.menu_fragment_campaign_filter) {
+                    isFilter = !isFilter;
+                    filter();
+                    return true;
+                }
+                return false;
+            }
+        });
         swipeRefreshLayout.setOnRefreshListener(this);
         campaignAdapter = new CampaignAdapter(this);
         recyclerView.setAdapter(campaignAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                    RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int swipePosition = viewHolder.getAdapterPosition();
+                campaignAdapter.remove(swipePosition);
+            }
+        }).attachToRecyclerView(recyclerView);
         setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        if (savedInstanceState == null) {
-            onRefresh();
-        } else {
-            // @formatter:off
-            List<Campaign> campaigns = GsonUtils.createGson().fromJson(
-                    savedInstanceState.getString("campaigns"), new TypeToken<List<Campaign>>() {}.getType());
-            // @formatter:on
-            campaignAdapter.addItems(campaigns);
-        }
+        onRefresh();
     }
 
     @Override
@@ -98,9 +114,7 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("campaigns", GsonUtils.createGson().toJson(campaignAdapter.getItems()));
+    public void filter() {
+        // TODO: フィルター
     }
 }

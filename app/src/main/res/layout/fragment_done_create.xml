@@ -34,6 +34,7 @@
                 android:id="@+id/fragment_done_create_textinputlayout_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 >
 
             <EditText
@@ -43,6 +44,7 @@
                     android:hint="@string/fragment_done_create_edit_title"
                     android:inputType="text"
                     android:lines="1"
+                    android:textColorHint="#88AAAAAA"
                     />
 
         </android.support.design.widget.TextInputLayout>
@@ -52,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fragment_done_create_textinputlayout_title"
+                android:layout_margin="8dp"
                 >
 
             <EditText
@@ -61,6 +64,7 @@
                     android:focusable="false"
                     android:hint="@string/fragment_done_create_edit_completed_at"
                     android:inputType="datetime"
+                    android:textColorHint="#88AAAAAA"
                     />
 
         </android.support.design.widget.TextInputLayout>
@@ -70,6 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fragment_done_create_textinputlayout_completed_at"
+                android:layout_margin="8dp"
                 >
 
             <EditText
@@ -78,6 +83,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/fragment_done_create_edit_description"
                     android:inputType="textMultiLine"
+                    android:textColorHint="#88AAAAAA"
                     />
 
         </android.support.design.widget.TextInputLayout>

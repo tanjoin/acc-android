@@ -70,4 +70,9 @@ public abstract class AbsAdapter<T, VH extends AbsViewHolder<T>> extends Recycle
     public int getItemCount() {
         return items != null ? items.size() : 0;
     }
+
+    public void remove(int swipePosition) {
+        items.remove(swipePosition);
+        notifyDataSetChanged();
+    }
 }

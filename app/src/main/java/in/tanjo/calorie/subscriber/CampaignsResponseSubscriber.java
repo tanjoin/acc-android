@@ -18,6 +18,7 @@ public class CampaignsResponseSubscriber extends AbsSubscriber<CampaignsResponse
     @Override
     public void onNext(CampaignsResponse campaignsResponse) {
         if (campaignAdapter != null && campaignsResponse != null) {
+            campaignAdapter.clear();
             campaignAdapter.addItems(campaignsResponse.getCampaigns());
         }
     }
