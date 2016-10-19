@@ -19,7 +19,7 @@ public abstract class AbsAdapter<T, VH extends AbsViewHolder<T>> extends Recycle
     private List<T> items = Lists.newArrayList();
 
     @Nullable
-    protected T getItem(int position) {
+    public T getItem(int position) {
         try {
             return items.get(position);
         } catch (IndexOutOfBoundsException e) {
@@ -27,9 +27,25 @@ public abstract class AbsAdapter<T, VH extends AbsViewHolder<T>> extends Recycle
         }
     }
 
-    public void setItems(@NonNull List<T> items) {
-        this.items = items;
-        notifyDataSetChanged();
+    @NonNull
+    public List<T> getItems() {
+        return items;
+    }
+
+    public void addItem(@NonNull T item) {
+        this.items.add(item);
+        notifyItemInserted(this.items.size() - 1);
+    }
+
+    public void addItems(@NonNull List<T> items) {
+        int positionStart = this.items.size() - 1;
+        int itemCount = items.size();
+        this.items.addAll(items);
+        notifyItemRangeInserted(positionStart, itemCount);
+    }
+
+    public void clear() {
+        items.clear();
     }
 
     @NonNull

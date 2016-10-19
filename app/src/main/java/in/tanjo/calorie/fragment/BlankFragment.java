@@ -1,5 +1,6 @@
 package in.tanjo.calorie.fragment;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 
@@ -19,8 +20,8 @@ public class BlankFragment extends AbsFragment {
     }
 
     @Override
-    protected void initView() {
-        super.initView();
+    protected void initView(Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
         setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 }

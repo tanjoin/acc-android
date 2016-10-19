@@ -1,51 +1,26 @@
 package in.tanjo.calorie.model;
 
 import com.google.common.base.Strings;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 
-import org.threeten.bp.ZonedDateTime;
-import org.threeten.bp.format.DateTimeFormatter;
+import android.support.annotation.NonNull;
 
-import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
+import in.tanjo.calorie.util.GsonUtils;
 
 public class AbsGsonModel {
 
     protected String toJson() {
-        return createGson().toJson(this, this.getClass());
+        return GsonUtils.createGson().toJson(this, this.getClass());
     }
 
-    public static Gson createGson() {
-        return new GsonBuilder().registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-            @Override
-            public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                    throws JsonParseException {
-                for (String format : Arrays.asList("yyyy/MM/dd HH:mm", "yyyy/MM/dd")) {
-                    try {
-                        return new SimpleDateFormat(format, Locale.JAPAN).parse(json.getAsString());
-                    } catch (ParseException ignored) {
-                    }
-                }
-                throw new JsonParseException("Unparseable date: " + json.getAsString());
-            }
-        }).create();
-    }
-
+    @NonNull
     protected String wrapString(String string) {
         return Strings.nullToEmpty(string);
     }
 
+    @NonNull
     protected <T> List<T> wrapList(List<T> list) {
         if (list == null) {
             list = new ArrayList<>();

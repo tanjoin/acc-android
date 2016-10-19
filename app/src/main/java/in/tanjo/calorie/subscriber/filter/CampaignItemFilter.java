@@ -1,4 +1,4 @@
-package in.tanjo.calorie.rx;
+package in.tanjo.calorie.subscriber.filter;
 
 import java.util.Calendar;
 import java.util.Date;

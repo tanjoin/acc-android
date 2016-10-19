@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.tanjo.calorie.fragment.BlankFragment;
 import in.tanjo.calorie.fragment.CampaignFragment;
+import in.tanjo.calorie.fragment.DoneFragment;
 import in.tanjo.calorie.fragment.PurchaseFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         fragmentTransaction.replace(R.id.activity_main_relativelayout, fragment);
         if (isAddToBackStack) {
-            fragmentTransaction.addToBackStack(fragment.getTag());
+            fragmentTransaction.addToBackStack(null);
         }
         fragmentTransaction.commit();
     }
@@ -84,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_activity_main_setting:
                 newFragmentType = FragmentType.BLANK;
                 break;
+            case R.id.menu_activity_main_done:
+                newFragmentType = FragmentType.DONE;
+                break;
         }
         if (newFragmentType != fragmentType && newFragmentType != FragmentType.UNKNOWN) {
             fragmentType = newFragmentType;
@@ -99,11 +103,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (drawerLayout.getDrawerLockMode(navigationView) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
             if (keyCode == KeyEvent.KEYCODE_BACK && !drawerLayout.isDrawerOpen(navigationView)) {
-                drawerLayout.openDrawer(navigationView);
+                if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+                    getSupportFragmentManager().popBackStack();
+                } else {
+                    openDrawer();
+                }
                 return true;
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void openDrawer() {
+        drawerLayout.openDrawer(navigationView);
     }
 
     private enum FragmentType {
@@ -129,6 +141,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             Fragment getFragment() {
                 return PurchaseFragment.newInstance();
+            }
+        },
+        DONE {
+            @Override
+            Fragment getFragment() {
+                return DoneFragment.newInstance();
             }
         };
 

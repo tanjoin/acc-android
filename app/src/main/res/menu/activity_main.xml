@@ -18,6 +18,11 @@
                 android:title="@string/campaign"
                 />
 
+        <item
+                android:id="@+id/menu_activity_main_done"
+                android:title="@string/done"
+                />
+
     </group>
 
     <group>

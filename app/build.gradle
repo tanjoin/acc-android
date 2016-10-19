@@ -47,6 +47,7 @@ dependencies {
     // Retrofit (http://square.github.io/retrofit/)
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.1.0'
+    compile group: 'com.squareup.retrofit2', name: 'adapter-rxjava', version: '2.1.0'
 
     // OkHttp (http://square.github.io/okhttp/)
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
@@ -66,4 +67,7 @@ dependencies {
 
     // ThreeTenABP (https://github.com/JakeWharton/ThreeTenABP)
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.4'
+
+    // EventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

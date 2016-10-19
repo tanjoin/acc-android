@@ -8,9 +8,8 @@ import java.util.List;
 
 import in.tanjo.calorie.R;
 import in.tanjo.calorie.model.Campaign;
-import in.tanjo.calorie.rx.CampaignItemAction;
-import in.tanjo.calorie.rx.CampaignItemFilter;
-import in.tanjo.calorie.rx.ThrowableAction;
+import in.tanjo.calorie.subscriber.CampaignItemSubscriber;
+import in.tanjo.calorie.subscriber.filter.CampaignItemFilter;
 import in.tanjo.calorie.viewholder.CampaignViewHolder;
 import rx.Observable;
 
@@ -33,11 +32,11 @@ public class CampaignAdapter extends AbsAdapter<Campaign, CampaignViewHolder> im
     }
 
     @Override
-    public void setItems(@NonNull List<Campaign> items) {
+    public void addItems(@NonNull List<Campaign> items) {
         List<Campaign> filteredCampaigns = new ArrayList<>();
         Observable.from(items).filter(new CampaignItemFilter())
-                .forEach(new CampaignItemAction(filteredCampaigns), new ThrowableAction());
-        super.setItems(filteredCampaigns);
+                .subscribe(new CampaignItemSubscriber(filteredCampaigns));
+        super.addItems(filteredCampaigns);
     }
 
     @Override

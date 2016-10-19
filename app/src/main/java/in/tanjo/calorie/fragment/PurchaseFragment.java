@@ -1,6 +1,7 @@
 package in.tanjo.calorie.fragment;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.DrawerLayout;
@@ -8,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -45,8 +47,19 @@ public class PurchaseFragment extends AbsFragment implements SwipeRefreshLayout.
     }
 
     @Override
-    protected void initView() {
+    protected void initView(Bundle savedInstanceState) {
         toolbar.setTitle(R.string.fragment_purchase_title);
+        toolbar.setNavigationIcon(R.drawable.ic_menu);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Activity activity = getActivity();
+                if (activity != null && activity instanceof MainActivity) {
+                    MainActivity mainActivity = (MainActivity) activity;
+                    mainActivity.openDrawer();
+                }
+            }
+        });
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         purchaseAdapter = new PurchaseAdapter(this);
@@ -56,7 +69,7 @@ public class PurchaseFragment extends AbsFragment implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        purchaseAdapter.setItems(new ArrayList<Purchase>());
+        purchaseAdapter.addItems(new ArrayList<Purchase>());
     }
 
     @OnClick(R.id.fragment_purchase_floatingactionbutton)

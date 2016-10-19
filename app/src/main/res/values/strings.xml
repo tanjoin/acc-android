@@ -4,11 +4,17 @@
     <string name="purchase_history">購入履歴</string>
     <string name="campaign">キャンペーン</string>
     <string name="setting">設定</string>
+    <string name="done">Doneリスト</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_blank_title">作成中</string>
     <string name="fragment_campaign_title">キャンペーン</string>
     <string name="fragment_purchase_create_title">作成（購入履歴）</string>
     <string name="fragment_purchase_title">購入履歴</string>
+    <string name="fragment_done_title">Doneリスト</string>
+    <string name="save">保存</string>
+    <string name="fragment_done_create_edit_title">完了したことのタイトル</string>
+    <string name="fragment_done_create_edit_description">説明</string>
+    <string name="fragment_done_create_title">完了したことを作成</string>
+    <string name="fragment_done_create_error_message_title">タイトルを入力してください</string>
+    <string name="fragment_done_create_edit_completed_at">完了日時</string>
 </resources>

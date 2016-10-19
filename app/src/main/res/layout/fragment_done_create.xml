@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fragment_done_create_coordinatorlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        >
+
+    <android.support.design.widget.AppBarLayout
+            android:id="@+id/fragment_done_create_appbarlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            >
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/fragment_done_create_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/fragment_done_create_textinputlayout_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+            <EditText
+                    android:id="@+id/fragment_done_create_edittext_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/fragment_done_create_edit_title"
+                    android:inputType="text"
+                    android:lines="1"
+                    />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/fragment_done_create_textinputlayout_completed_at"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_done_create_textinputlayout_title"
+                >
+
+            <EditText
+                    android:id="@+id/fragment_done_create_edittext_completed_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/fragment_done_create_edit_completed_at"
+                    android:inputType="datetime"
+                    />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/fragment_done_create_textinputlayout_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_done_create_textinputlayout_completed_at"
+                >
+
+            <EditText
+                    android:id="@+id/fragment_done_create_edittext_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/fragment_done_create_edit_description"
+                    android:inputType="textMultiLine"
+                    />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
