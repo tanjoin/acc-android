@@ -34,14 +34,14 @@ public abstract class AbsAdapter<T, VH extends AbsViewHolder<T>> extends Recycle
 
     public void addItem(@NonNull T item) {
         this.items.add(item);
-        notifyItemInserted(this.items.size() - 1);
+        notifyDataSetChanged();
     }
 
     public void addItems(@NonNull List<T> items) {
         int positionStart = this.items.size() - 1;
         int itemCount = items.size();
         this.items.addAll(items);
-        notifyItemRangeInserted(positionStart, itemCount);
+        notifyDataSetChanged();
     }
 
     public void clear() {

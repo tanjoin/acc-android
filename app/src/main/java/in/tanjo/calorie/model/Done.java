@@ -84,6 +84,6 @@ public class Done extends AbsGsonModel {
     public String getCompletedAtString() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(completedAt);
-        return DateFormat.format("yy/MM/dd HH:mm", calendar).toString();
+        return DateFormat.format("yyyy/MM/dd HH:mm", calendar).toString();
     }
 }
