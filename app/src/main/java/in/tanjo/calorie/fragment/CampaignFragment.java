@@ -135,6 +135,21 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
         onRefresh();
     }
 
+    private void excludeCheck(final boolean exclude) {
+        new CampaignCheckDataBase(getContext()).findAll().observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new SwipeRefreshLayoutRefreshingAction0(swipeRefreshLayout, true))
+                .doOnError(new SwipeRefreshLayoutRefreshingAction1<Throwable>(swipeRefreshLayout))
+                .doOnCompleted(new SwipeRefreshLayoutRefreshingAction0(swipeRefreshLayout, false))
+                .subscribe(getRxManager().composite(new AbsSubscriber<List<CampaignCheck>>() {
+                    @Override
+                    public void onNext(List<CampaignCheck> campaignChecks) {
+                        if (campaignChecks != null) {
+                            campaignAdapter.excludeCheck(exclude, campaignChecks);
+                        }
+                    }
+                }));
+    }
+
     public void filter() {
         filterIndex += 1;
         if (serviceTitles.size() > filterIndex) {
@@ -149,21 +164,6 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
             }
             campaignAdapter.filter(null);
         }
-    }
-
-    private void excludeCheck(final boolean exclude) {
-        new CampaignCheckDataBase(getContext()).findAll().observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(new SwipeRefreshLayoutRefreshingAction0(swipeRefreshLayout, true))
-                .doOnError(new SwipeRefreshLayoutRefreshingAction1<Throwable>(swipeRefreshLayout))
-                .doOnCompleted(new SwipeRefreshLayoutRefreshingAction0(swipeRefreshLayout, false))
-                .subscribe(getRxManager().composite(new AbsSubscriber<List<CampaignCheck>>() {
-                    @Override
-                    public void onNext(List<CampaignCheck> campaignChecks) {
-                        if (campaignChecks != null) {
-                            campaignAdapter.excludeCheck(exclude, campaignChecks);
-                        }
-                    }
-                }));
     }
 
     @Override
