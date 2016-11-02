@@ -1,5 +1,7 @@
 package in.tanjo.calorie.fragment;
 
+import com.j256.ormlite.dao.Dao;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,11 +23,13 @@ import in.tanjo.calorie.MainActivity;
 import in.tanjo.calorie.R;
 import in.tanjo.calorie.adapter.CampaignAdapter;
 import in.tanjo.calorie.api.CampaignApi;
+import in.tanjo.calorie.database.CampaignCheckDataBase;
 import in.tanjo.calorie.model.Campaign;
+import in.tanjo.calorie.model.CampaignCheck;
+import in.tanjo.calorie.subscriber.AbsSubscriber;
 import in.tanjo.calorie.subscriber.CampaignsResponseSubscriber;
 import in.tanjo.calorie.subscriber.action.SwipeRefreshLayoutRefreshingAction0;
 import in.tanjo.calorie.subscriber.action.SwipeRefreshLayoutRefreshingAction1;
-import in.tanjo.calorie.util.HtmlUtils;
 import rx.android.schedulers.AndroidSchedulers;
 
 
@@ -45,6 +49,8 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
     private List<String> serviceTitles = new ArrayList<>();
 
     private int filterIndex = -1;
+
+    private boolean isExcludeCheck = true;
 
     @NonNull
     public static CampaignFragment newInstance() {
@@ -77,12 +83,17 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
                 if (item.getItemId() == R.id.menu_fragment_campaign_filter) {
                     filter();
                     return true;
+                } else if (item.getItemId() == R.id.menu_fragment_campaign_unread) {
+                    isExcludeCheck = !isExcludeCheck;
+                    excludeCheck(isExcludeCheck);
+                    return true;
                 }
                 return false;
             }
         });
         swipeRefreshLayout.setOnRefreshListener(this);
         campaignAdapter = new CampaignAdapter(this);
+        excludeCheck(isExcludeCheck);
         recyclerView.setAdapter(campaignAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -94,8 +105,30 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int swipePosition = viewHolder.getAdapterPosition();
+                final int swipePosition = viewHolder.getAdapterPosition();
                 campaignAdapter.remove(swipePosition);
+                new CampaignCheckDataBase(getContext()).find(campaignAdapter.getItem(swipePosition).getId())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new AbsSubscriber<CampaignCheck>() {
+                            @Override
+                            public void onNext(CampaignCheck campaignCheck) {
+                                if (campaignCheck == null) {
+                                    campaignCheck = new CampaignCheck();
+                                    campaignCheck.setId(campaignAdapter.getItem(swipePosition).getId());
+                                }
+                                campaignCheck.setRead(!campaignCheck.isRead());
+                                new CampaignCheckDataBase(getContext()).save(campaignCheck)
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new AbsSubscriber<Dao.CreateOrUpdateStatus>() {
+                                            @Override
+                                            public void onNext(Dao.CreateOrUpdateStatus createOrUpdateStatus) {
+                                                if (getView() != null) {
+                                                    Snackbar.make(getView(), "既読にしました", Snackbar.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        });
             }
         }).attachToRecyclerView(recyclerView);
         setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -118,6 +151,21 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
         }
     }
 
+    private void excludeCheck(final boolean exclude) {
+        new CampaignCheckDataBase(getContext()).findAll().observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new SwipeRefreshLayoutRefreshingAction0(swipeRefreshLayout, true))
+                .doOnError(new SwipeRefreshLayoutRefreshingAction1<Throwable>(swipeRefreshLayout))
+                .doOnCompleted(new SwipeRefreshLayoutRefreshingAction0(swipeRefreshLayout, false))
+                .subscribe(getRxManager().composite(new AbsSubscriber<List<CampaignCheck>>() {
+                    @Override
+                    public void onNext(List<CampaignCheck> campaignChecks) {
+                        if (campaignChecks != null) {
+                            campaignAdapter.excludeCheck(exclude, campaignChecks);
+                        }
+                    }
+                }));
+    }
+
     @Override
     public void onRefresh() {
         new CampaignApi().getCampaigns()
@@ -130,8 +178,10 @@ public class CampaignFragment extends AbsFragment implements SwipeRefreshLayout.
 
     @Override
     public void onCardViewClick(@NonNull Campaign campaign, int position) {
-        if (campaign.getUrls().size() > 0) {
-            HtmlUtils.openUrl(getContext(), campaign.getUrls().get(0));
+        Activity activity = getActivity();
+        if (activity != null && activity instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) activity;
+            mainActivity.add(CampaignDetailFragment.newInstance(campaign));
         }
     }
 }

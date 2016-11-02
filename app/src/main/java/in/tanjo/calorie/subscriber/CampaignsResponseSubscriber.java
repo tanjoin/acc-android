@@ -30,7 +30,7 @@ public class CampaignsResponseSubscriber extends AbsSubscriber<CampaignsResponse
             campaignAdapter.clear();
             campaignAdapter.addItems(campaignsResponse.getCampaigns());
 
-            Observable.from(campaignAdapter.getItems())
+            Observable.from(campaignsResponse.getCampaigns())
                     .filter(new Func1<Campaign, Boolean>() {
                         @Override
                         public Boolean call(Campaign campaign) {

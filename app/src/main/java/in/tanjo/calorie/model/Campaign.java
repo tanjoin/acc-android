@@ -1,15 +1,26 @@
 package in.tanjo.calorie.model;
 
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
+
+import com.j256.ormlite.field.DatabaseField;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.List;
 
+import in.tanjo.calorie.util.GsonUtils;
+
 public class Campaign extends AbsGsonModel {
 
+    @DatabaseField(columnName = "id")
+    @SerializedName("id")
+    int id;
+
     @Nullable
+    @DatabaseField(columnName = "id")
     @SerializedName("title")
     String title;
 
@@ -32,6 +43,19 @@ public class Campaign extends AbsGsonModel {
     @Nullable
     @SerializedName("on")
     List<Weekday> on;
+
+    @Override
+    public String toJson() {
+        return super.toJson();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @NonNull
     public String getTitle() {
@@ -85,5 +109,14 @@ public class Campaign extends AbsGsonModel {
 
     public void setPeriod(@Nullable Period period) {
         this.period = period;
+    }
+
+    public static Campaign fromJson(String string) {
+        try {
+            return GsonUtils.createGson().fromJson(string, Campaign.class);
+        } catch (JsonParseException e) {
+            Log.e("acc", string, e);
+            return null;
+        }
     }
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.sql.SQLException;
 
+import in.tanjo.calorie.model.CampaignCheck;
 import in.tanjo.calorie.model.Done;
 
 
@@ -27,6 +28,7 @@ public class AccDatabaseOpenHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, Done.class);
+            TableUtils.createTable(connectionSource, CampaignCheck.class);
         } catch (SQLException e) {
             Log.e("ACC", AccDatabaseOpenHelper.class.getName() + " : データベースを作成できませんでした.", e);
         }

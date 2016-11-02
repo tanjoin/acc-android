@@ -11,6 +11,7 @@ import java.util.List;
 
 import in.tanjo.calorie.R;
 import in.tanjo.calorie.model.Campaign;
+import in.tanjo.calorie.model.CampaignCheck;
 import in.tanjo.calorie.subscriber.CampaignItemSubscriber;
 import in.tanjo.calorie.subscriber.filter.CampaignItemFilter;
 import in.tanjo.calorie.viewholder.CampaignViewHolder;
@@ -23,6 +24,12 @@ public class CampaignAdapter extends AbsAdapter<Campaign, CampaignViewHolder> im
     private Listener listener;
 
     private List<Campaign> items = new ArrayList<>();
+
+    private String serviceTitle = "";
+
+    private boolean exclude = true;
+
+    private List<CampaignCheck> campaignChecks;
 
     public CampaignAdapter(Listener listener) {
         this.listener = listener;
@@ -45,6 +52,7 @@ public class CampaignAdapter extends AbsAdapter<Campaign, CampaignViewHolder> im
         Observable.from(items).filter(new CampaignItemFilter())
                 .subscribe(new CampaignItemSubscriber(filteredCampaigns));
         super.addItems(filteredCampaigns);
+        run();
     }
 
     @Override
@@ -64,12 +72,31 @@ public class CampaignAdapter extends AbsAdapter<Campaign, CampaignViewHolder> im
         return new CampaignViewHolder(view, this);
     }
 
-    public void filter(@Nullable final String serviceTitles) {
+    public void filter(@Nullable final String serviceTitle) {
+        this.serviceTitle = serviceTitle;
+        run();
+    }
+
+    private void run() {
         Observable.from(items).filter(new CampaignItemFilter())
                 .filter(new Func1<Campaign, Boolean>() {
                     @Override
                     public Boolean call(Campaign campaign) {
-                        return Strings.isNullOrEmpty(serviceTitles) || serviceTitles.equals(campaign.getServiceTitle());
+                        return Strings.isNullOrEmpty(serviceTitle) || serviceTitle.equals(campaign.getServiceTitle());
+                    }
+                })
+                .filter(new Func1<Campaign, Boolean>() {
+                    @Override
+                    public Boolean call(Campaign campaign) {
+                        if (!exclude) {
+                            return true;
+                        }
+                        for (CampaignCheck check : campaignChecks) {
+                            if (check.isRead() && check.getId() == campaign.getId()) {
+                                return false;
+                            }
+                        }
+                        return true;
                     }
                 })
                 .toList()
@@ -81,6 +108,12 @@ public class CampaignAdapter extends AbsAdapter<Campaign, CampaignViewHolder> im
                         notifyDataSetChanged();
                     }
                 });
+    }
+
+    public void excludeCheck(final boolean exclude, @NonNull List<CampaignCheck> campaignChecks) {
+        this.exclude = exclude;
+        this.campaignChecks = campaignChecks;
+        run();
     }
 
     public interface Listener {

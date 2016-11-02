@@ -7,6 +7,7 @@
     <string name="done">Doneリスト</string>
     <string name="filter">フィルター</string>
     <string name="save">保存</string>
+    <string name="alreadly_read">既読</string>
 
     <string name="fragment_blank_title">作成中</string>
     <string name="fragment_campaign_title">キャンペーン</string>
